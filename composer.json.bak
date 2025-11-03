@@ -1,5 +1,5 @@
 {
-    "name": "integritty/sylius-product-badge-plugin",
+    "name": "integritty/sylius-productbadge-plugin",
     "type": "sylius-plugin",
     "description": "Acme example plugin for Sylius.",
     "keywords": [

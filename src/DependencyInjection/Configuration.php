@@ -14,9 +14,17 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('acme_sylius_example');
+        $treeBuilder = new TreeBuilder('integritty_sylius_product_badge');
         $rootNode = $treeBuilder->getRootNode();
-
+        $rootNode
+            ->children()
+            ->arrayNode('css_classes')
+            ->prototype('scalar')->end()
+            ->defaultValue([]) // Defaults to empty array if not provided
+            ->info('List of CSS classes available for product badges')
+            ->end()
+            ->end()
+        ;
         return $treeBuilder;
     }
 }

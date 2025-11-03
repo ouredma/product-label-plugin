@@ -10,68 +10,94 @@ fi
 VENDOR_RAW="$1"
 PLUGIN_RAW="$2"
 
-# Normalize:
-# VendorName (PascalCase) → VENDOR
-VENDOR=$(echo "$VENDOR_RAW" | sed -r 's/(^| )[a-z]/\U&/g' | sed 's/ //g')
-# plugin name in PascalCase
-PLUGIN=$(echo "$PLUGIN_RAW" | sed -r 's/(^| )[a-z]/\U&/g' | sed 's/ //g')
+# Normalize: PascalCase vendor & plugin
+VENDOR=$(echo "$VENDOR_RAW" | sed -E 's/(^|[[:space:]])([a-z])/\U\2/g' | tr -d ' ')
+PLUGIN=$(echo "$PLUGIN_RAW" | sed -E 's/(^|[[:space:]])([a-z])/\U\2/g' | tr -d ' ')
 
-# Derived names based on naming guide:
-REPO_NAME="${VENDOR}/sylius-${PLUGIN:-plugin}"
-COMPOSER_NAME="sylius-${PLUGIN,,}-plugin"             # plugin lower-case for composer
+# Derived names (Sylius naming conventions)
 BUNDLE_CLASS="${VENDOR}Sylius${PLUGIN}Plugin"
 EXTENSION_CLASS="${VENDOR}Sylius${PLUGIN}Extension"
 NAMESPACE="${VENDOR}\\Sylius${PLUGIN}Plugin"
-CONFIG_KEY="${VENDOR,,}_sylius_${PLUGIN,,}_plugin"
+CONFIG_KEY="$(echo "${VENDOR}_${PLUGIN}" | tr '[:upper:]' '[:lower:]' | sed 's/_/_sylius_/')_plugin"
+COMPOSER_NAME="sylius-$(echo "${PLUGIN}" | tr '[:upper:]' '[:lower:]')-plugin"
+TESTS_NAMESPACE="Tests\\\\${VENDOR}\\\\Sylius${PLUGIN}Plugin"
 
-echo "Applying naming changes for:"
-echo "  Vendor:          $VENDOR"
-echo "  Plugin:          $PLUGIN"
-echo "  Composer name:   $COMPOSER_NAME"
-echo "  Bundle class:    $BUNDLE_CLASS"
-echo "  Extension class: $EXTENSION_CLASS"
-echo "  Namespace:       $NAMESPACE"
-echo "  Config key:      $CONFIG_KEY"
+# Snake case for DB naming
+VENDOR_SNAKE=$(echo "$VENDOR" | sed -E 's/([A-Z])/_\1/g' | tr '[:upper:]' '[:lower:]' | sed 's/^_//')
+PLUGIN_SNAKE=$(echo "$PLUGIN" | sed -E 's/([A-Z])/_\1/g' | tr '[:upper:]' '[:lower:]' | sed 's/^_//')
+DB_NAME="${VENDOR_SNAKE}_${PLUGIN_SNAKE}_%kernel.environment%"
 
-# 1. composer.json – update name, description, psr-4 and tests namespace
-if [ -f composer.json ]; then
-  # Backup
-  cp composer.json composer.json.bak
-  # Use sed to replace minimal things
-  sed -i "s#\"sylius/plugin-skeleton\"#\"${COMPOSER_NAME}\"#g" composer.json
-  sed -i "s#\"Acme\\\\SyliusExamplePlugin\\\\\"#\"${NAMESPACE}\\\\\\\\\"#g" composer.json
-  sed -i "s#\"Tests\\\\Acme\\\\SyliusExamplePlugin\\\\\"#\"Tests\\\\${VENDOR}\\\\Sylius${PLUGIN}Plugin\\\\\"#g" composer.json
-  # You may also update description manually
+# Cross-platform sed
+if sed --version >/dev/null 2>&1; then
+  SED="sed -i"
+else
+  SED="sed -i ''"
 fi
 
-# 2. Rename bundle class file and update namespace inside
+echo "🔧 Applying naming changes..."
+echo "Vendor:           $VENDOR"
+echo "Plugin:           $PLUGIN"
+echo "Bundle class:     $BUNDLE_CLASS"
+echo "Extension class:  $EXTENSION_CLASS"
+echo "Namespace:        $NAMESPACE"
+echo "Config key:       $CONFIG_KEY"
+echo "Composer name:    $COMPOSER_NAME"
+echo "Database name:    $DB_NAME"
+echo
+
+# 1. Rename PHP bundle & extension files
 if [ -f "src/AcmeSyliusExamplePlugin.php" ]; then
   mv src/AcmeSyliusExamplePlugin.php "src/${BUNDLE_CLASS}.php"
-  sed -i "s#namespace Acme\\\\SyliusExamplePlugin#namespace ${NAMESPACE}#g" "src/${BUNDLE_CLASS}.php"
-  sed -i "s#class AcmeSyliusExamplePlugin#class ${BUNDLE_CLASS}#g" "src/${BUNDLE_CLASS}.php"
 fi
-
-# 3. Rename extension class
 if [ -f "src/DependencyInjection/AcmeSyliusExampleExtension.php" ]; then
-  mv src/DependencyInjection/AcmeSyliusExampleExtension.php \
-     src/DependencyInjection/${EXTENSION_CLASS}.php
-  sed -i "s#namespace Acme\\\\SyliusExamplePlugin\\\\DependencyInjection#namespace ${NAMESPACE}\\\\DependencyInjection#g" \
-      src/DependencyInjection/${EXTENSION_CLASS}.php
-  sed -i "s#class AcmeSyliusExampleExtension#class ${EXTENSION_CLASS}#g" \
-      src/DependencyInjection/${EXTENSION_CLASS}.php
+  mv src/DependencyInjection/AcmeSyliusExampleExtension.php "src/DependencyInjection/${EXTENSION_CLASS}.php"
 fi
 
-# 4. Configuration key inside Configuration.php
-if [ -f "src/DependencyInjection/Configuration.php" ]; then
-  sed -i "s#acme_sylius_example_plugin#${CONFIG_KEY}#g" src/DependencyInjection/Configuration.php
+# 2. Replace all occurrences recursively (ignore RENAME_GUIDE and vendor/)
+echo "→ Replacing occurrences (skipping vendor/ and RENAME_GUIDE)..."
+find . -type f \
+  \( -name "*.php" -o -name "*.xml" -o -name "*.yml" -o -name "*.yaml" -o -name "*.json" -o -name "*.md" \) \
+  ! -path "./vendor/*" ! -name "RENAME_GUIDE" | while read -r FILE; do
+    $SED "s#AcmeSyliusExamplePlugin#${BUNDLE_CLASS}#g" "$FILE"
+    $SED "s#Acme\\\\SyliusExamplePlugin#${NAMESPACE}#g" "$FILE"
+    $SED "s#acme_sylius_example_plugin#${CONFIG_KEY}#g" "$FILE"
+    $SED "s#Tests\\\\Acme\\\\SyliusExamplePlugin#${TESTS_NAMESPACE}#g" "$FILE"
+done
+
+# 3. Update composer.json
+if [ -f composer.json ]; then
+  echo "→ Updating composer.json..."
+  cp composer.json composer.json.bak
+  $SED "s#\"name\": \".*\"#\"name\": \"${VENDOR,,}/${COMPOSER_NAME}\",#g" composer.json
+  $SED "s#\"Acme\\\\\\\\SyliusExamplePlugin\\\\\\\\\"#\"${NAMESPACE}\\\\\\\\\",#g" composer.json
+  $SED "s#\"Tests\\\\\\\\Acme\\\\\\\\SyliusExamplePlugin\\\\\\\\\"#\"${TESTS_NAMESPACE}\\\\\\\\\",#g" composer.json
 fi
 
-# 5. Tests / Application directories
-find tests/Application -type f -exec sed -i "s#Acme\\\\SyliusExamplePlugin\\\\#${NAMESPACE}\\\\#g" {} +
-find tests -type f -exec sed -i "s#Tests\\\\Acme\\\\SyliusExamplePlugin\\\\#Tests\\\\${VENDOR}\\\\Sylius${PLUGIN}Plugin\\\\#g" {} +
+# 4. Optional: rename namespace directory
+if [ -d "src/Acme" ]; then
+  mkdir -p "src/${VENDOR}"
+  mv src/Acme/* "src/${VENDOR}/" || true
+  rmdir src/Acme 2>/dev/null || true
+fi
 
-echo "✅ Naming changes applied. Please run:"
-echo "    composer dump-autoload"
-echo "  and review manually other files and directories (routing, features, etc.) to ensure nothing left with 'AcmeSyliusExamplePlugin'."
+# 5. Update DATABASE_URL in tests environment file
+ENV_FILE=""
+if [ -f "tests/TestApplication/.env.test" ]; then
+  ENV_FILE="tests/TestApplication/.env.test"
+elif [ -f "tests/Application/.env.test" ]; then
+  ENV_FILE="tests/Application/.env.test"
+fi
 
-exit 0
+if [ -n "$ENV_FILE" ]; then
+  echo "→ Updating database URL in ${ENV_FILE}..."
+  $SED "s#^DATABASE_URL=.*#DATABASE_URL=mysql://root:root@127.0.0.1/${DB_NAME}#g" "$ENV_FILE"
+else
+  echo "⚠️  No .env.test file found under tests/Application or tests/TestApplication"
+fi
+
+echo
+echo "✅ All occurrences replaced, vendor/ skipped, and database URL updated!"
+echo "Next steps:"
+echo "  1. Run: composer dump-autoload"
+echo "  2. Review configs and tests manually."
+echo "  3. Delete this script when done."

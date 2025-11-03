@@ -11,13 +11,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-final class IntegrittyProductBadgeExtension extends AbstractResourceExtension implements PrependExtensionInterface
+final class IntegrittySyliusProductBadgeExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
     use PrependDoctrineMigrationsTrait;
 
     /** @psalm-suppress UnusedVariable */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
+
+        $container->setParameter(
+            'integritty_sylius_product_badge.css_classes',
+            $config['css_classes']
+        );
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
 
         $loader->load('services.xml');
@@ -35,7 +42,7 @@ final class IntegrittyProductBadgeExtension extends AbstractResourceExtension im
 
     protected function getMigrationsDirectory(): string
     {
-        return '@AcmeSyliusExamplePlugin/src/Migrations';
+        return '@IntegrittySyliusProductBadgePlugin/src/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array

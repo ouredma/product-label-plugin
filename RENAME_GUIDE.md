@@ -40,7 +40,7 @@ To ensure a smooth renaming process, follow this order:
 
 1. **Main plugin class file:**
    ```
-   src/AcmeSyliusExamplePlugin.php → src/{CompanyName}{PluginName}.php
+   src/IntegrittySyliusProductBadgePlugin.php → src/{CompanyName}{PluginName}.php
    ```
 
 2. **DependencyInjection extension file:**
@@ -119,7 +119,7 @@ Update namespace declarations in:
 
 Also update:
 - Class names to match new plugin name
-- Twig namespace references from `@AcmeSyliusExamplePlugin` to `@{CompanyName}{PluginName}`
+- Twig namespace references from `@IntegrittySyliusProductBadgePlugin` to `@{CompanyName}{PluginName}`
 - In `Configuration.php`, update the TreeBuilder parameter:
   ```php
   $treeBuilder = new TreeBuilder('{company_name_snake}_{plugin_name_snake}');
@@ -148,13 +148,13 @@ Update `CLAUDE.md` to reflect the new plugin name and namespace.
 
 ## Search and Replace Summary
 
-| Find | Replace |
-|------|---------|
-| `Integritty\SyliusProductBadgePlugin` | `{CompanyName}\{PluginName}` |
-| `AcmeSyliusExamplePlugin` | `{CompanyName}{PluginName}` |
-| `AcmeSyliusExampleExtension` | `{CompanyName}{PluginName}Extension` |
-| `@AcmeSyliusExamplePlugin` | `@{CompanyName}{PluginName}` |
-| `Tests\Integritty\SyliusProductBadgePlugin` | `Tests\{CompanyName}\{PluginName}` |
+| Find                                  | Replace |
+|---------------------------------------|---------|
+| `IntegrittySyliusProductBadgePlugin` | `{CompanyName}\{PluginName}` |
+| `IntegrittySyliusProductBadgePlugin`             | `{CompanyName}{PluginName}` |
+| `AcmeSyliusExampleExtension`          | `{CompanyName}{PluginName}Extension` |
+| `@IntegrittySyliusProductBadgePlugin`            | `@{CompanyName}{PluginName}` |
+| `Tests\IntegrittySyliusProductBadgePlugin` | `Tests\{CompanyName}\{PluginName}` |
 
 ### Composer.json Specific Updates
 
@@ -214,8 +214,8 @@ After renaming, verify:
 ## Example Transformation
 
 From default skeleton:
-- `Integritty\SyliusProductBadgePlugin\AcmeSyliusExamplePlugin`
-- `@AcmeSyliusExamplePlugin/templates/...`
+- `Integritty\SyliusProductBadgePlugin\IntegrittySyliusProductBadgePlugin`
+- `@IntegrittySyliusProductBadgePlugin/templates/...`
 
 To custom plugin (example):
 - `MyCompany\SyliusAwesomeFeaturePlugin\MyCompanySyliusAwesomeFeaturePlugin`
