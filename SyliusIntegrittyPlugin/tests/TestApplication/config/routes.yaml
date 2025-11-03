@@ -1,0 +1,5 @@
+integritty_sylius_integritty_admin:
+    resource: "@IntegrittySyliusIntegrittyPlugin/config/routes/admin.yaml"
+
+integritty_sylius_integritty_shop:
+    resource: "@IntegrittySyliusIntegrittyPlugin/config/routes/shop.yaml"

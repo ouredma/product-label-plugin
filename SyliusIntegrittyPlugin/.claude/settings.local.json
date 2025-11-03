@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(vendor/bin/phpstan:*)",
+      "Bash(composer validate:*)",
+      "Bash(composer dump-autoload:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
