@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Resource\Model\TimestampableTrait;
 use Sylius\Resource\Model\TranslatableTrait;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class ProductBadge implements ProductBadgeInterface
 {
@@ -18,9 +19,11 @@ class ProductBadge implements ProductBadgeInterface
     }
 
     /** @var mixed */
+    #[Groups(['shop:product:read'])]
     protected $id;
 
     /** @var string|null */
+    #[Groups(['shop:product:read'])]
     protected $cssClass;
 
     /** @var Collection<int, ProductInterface> */

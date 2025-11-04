@@ -84,7 +84,7 @@ composer run test-app-init
 This is a **Sylius Plugin Skeleton** - a template for creating Sylius e-commerce plugins. It provides a complete development environment with both traditional and Docker setups.
 
 ### Core Structure
-- **Main Plugin Class**: `src/AcmeSyliusExamplePlugin.php` - Entry point using `SyliusPluginTrait`
+- **Main Plugin Class**: `src/IntegrittySyliusProductBadgePlugin.php` - Entry point using `SyliusPluginTrait`
 - **DI Extension**: `src/DependencyInjection/AcmeSyliusExampleExtension.php` - Handles service loading and Doctrine migrations
 - **Services**: `config/services.xml` - Service definitions with XML configuration
 - **Routes**: `config/routes/` - Separate admin and shop route definitions
