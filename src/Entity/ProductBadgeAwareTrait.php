@@ -9,13 +9,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 trait ProductBadgeAwareTrait
 {
     /**
      * @var Collection<int, ProductBadge>
      */
-    #[Groups(['shop:product:read'])]
+    #[SerializedName('productBadges'),Groups(['sylius:shop:product:show'])]
     #[MaxDepth(1)]
     #[ORM\ManyToMany(targetEntity: ProductBadgeInterface::class, mappedBy: 'products')]
     private Collection $productBadges;

@@ -19,11 +19,11 @@ class ProductBadge implements ProductBadgeInterface
     }
 
     /** @var mixed */
-    #[Groups(['shop:product:read'])]
+    #[Groups(['sylius:shop:product:show'])]
     protected $id;
 
     /** @var string|null */
-    #[Groups(['shop:product:read'])]
+    #[Groups(['sylius:shop:product:show'])]
     protected $cssClass;
 
     /** @var Collection<int, ProductInterface> */
