@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Integritty\SyliusProductBadgePlugin\Entity;
 
 use Sylius\Resource\Model\AbstractTranslation;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[Groups(['sylius:shop:product:show'])]
 class ProductBadgeTranslation extends AbstractTranslation implements ProductBadgeTranslationInterface
 {
     /** @var mixed */

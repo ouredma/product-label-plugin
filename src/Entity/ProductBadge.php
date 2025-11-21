@@ -10,6 +10,7 @@ use Sylius\Resource\Model\TimestampableTrait;
 use Sylius\Resource\Model\TranslatableTrait;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 class ProductBadge implements ProductBadgeInterface
 {
     use TimestampableTrait;
@@ -19,7 +20,7 @@ class ProductBadge implements ProductBadgeInterface
     }
 
     /** @var mixed */
-    #[Groups(['sylius:shop:product:show'])]
+
     protected $id;
 
     /** @var string|null */
@@ -41,6 +42,7 @@ class ProductBadge implements ProductBadgeInterface
         return $this->id;
     }
 
+    #[Groups(['sylius:shop:product:show'])]
     public function getName(): ?string
     {
         return $this->getTranslation()->getName();
