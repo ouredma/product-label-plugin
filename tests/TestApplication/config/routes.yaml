@@ -1,5 +1,2 @@
-acme_sylius_example_admin:
-    resource: "@IntegrittySyliusProductBadgePlugin/config/routes/admin.yaml"
-
-acme_sylius_example_shop:
-    resource: "@IntegrittySyliusProductBadgePlugin/config/routes/shop.yaml"
+integritty_sylius_product_badge_plugin:
+    resource: "@IntegrittySyliusProductBadgePlugin/config/routes.yaml"

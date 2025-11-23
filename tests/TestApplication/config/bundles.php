@@ -1,5 +1,5 @@
 <?php
 
 return [
-    Integritty\SyliusProductBadgePlugin\IntegrittySyliusExamplePlugin::class => ['all' => true],
+    Integritty\SyliusProductBadgePlugin\IntegrittySyliusProductBadgePlugin::class => ['all' => true],
 ];

@@ -17,3 +17,4 @@ doctrine:
                         type: attribute
                         dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
                         prefix: Tests\Integritty\SyliusProductBadgePlugin
+
