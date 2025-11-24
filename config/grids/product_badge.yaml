@@ -1,0 +1,55 @@
+sylius_grid:
+    grids:
+        sylius_admin_product_badge:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: "%integritty_sylius_product_badge_plugin.model.product_badge.class%"
+                    repository:
+                        method: createListQueryBuilder
+                        arguments: ["%locale%"]
+            sorting:
+                id: asc
+            fields:
+                id:
+                    type: twig
+                    label: sylius.ui.id
+                    sortable: ~
+                    options:
+                        template: "@SyliusAdmin/shared/grid/field/code.html.twig"
+                name:
+                    type: twig
+                    label: sylius.ui.name
+                    sortable: translation.name
+                    options:
+                        template: "@SyliusAdmin/shared/grid/field/name.html.twig"
+                        vars:
+                            th_class: "w-75"
+                cssClass:
+                    type: twig
+                    label: sylius.ui.cssClass
+                    sortable: ~
+                    options:
+                        template: "@IntegrittySyliusProductBadgePlugin/admin/grid/field/css_class.html.twig"
+                        vars:
+                            th_class: "w-75"
+            filters:
+                search:
+                    type: string
+                    label: sylius.ui.search
+                    form_options:
+                        type: !php/const Sylius\Component\Grid\Filter\StringFilter::TYPE_CONTAINS
+                    options:
+                        fields: [cssClass, translation.name]
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    update:
+                        type: update
+                    delete:
+                        type: delete
+                bulk:
+                    delete:
+                        type: delete

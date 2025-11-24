@@ -1,0 +1,14 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.product.create.content.form.side_navigation':
+            product_badges:
+                template: '@IntegrittySyliusProductBadgePlugin/admin/product/form/side_navigation/product_badges.html.twig'
+                priority: -100
+        'sylius_admin.product.create.content.form.sections':
+           product_badges:
+                template: '@IntegrittySyliusProductBadgePlugin/admin/product/form/sections/product_badges.html.twig'
+                priority: -100
+        'sylius_admin.product.create.content.form.sections.product_badges':
+            product_badge_dropdown:
+                template: '@IntegrittySyliusProductBadgePlugin/admin/product/form/sections/product_badges/product_badge_dropdown.html.twig'
+                priority: -100
