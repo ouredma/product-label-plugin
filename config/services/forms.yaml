@@ -1,0 +1,26 @@
+services:
+    Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeType:
+        arguments:
+            - '%integritty_sylius_product_badge_plugin.model.product_badge.class%'
+            - '%integritty_sylius_product_badge.css_classes%'
+            - ['sylius']
+        tags:
+            - { name: 'form.type' }
+
+    Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeTranslationType:
+        arguments:
+            - '%integritty_sylius_product_badge_plugin.model.product_badge_translation.class%'
+            - ['sylius']
+        tags:
+            - { name: 'form.type' }
+
+    Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeAutocompleteType:
+        arguments:
+            - '%integritty_sylius_product_badge_plugin.model.product_badge.class%'
+        tags:
+            - { name: 'form.type' }
+            - { name: 'ux.entity_autocomplete_field' }
+
+    Integritty\SyliusProductBadgePlugin\Form\Extension\Admin\ProductTypeExtension:
+        tags:
+            - { name: 'form.type_extension', priority: 300 }

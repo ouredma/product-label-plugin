@@ -6,15 +6,29 @@ twig:
     paths:
         '%kernel.project_dir%/../../../tests/TestApplication/templates': ~
 
-# Remove if you do not need to extend entities
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+    Integritty\SyliusProductBadgePlugin\Entity\ProductBadgeInterface: ~
+
+sylius_product:
+    resources:
+        product:
+            classes:
+                model: Tests\Integritty\SyliusProductBadgePlugin\Entity\Product
+
 doctrine:
     orm:
+        resolve_target_entities:
+            Integritty\SyliusProductBadgePlugin\Entity\ProductInterface: Tests\Integritty\SyliusProductBadgePlugin\Entity\Product
         entity_managers:
             default:
                 mappings:
                     TestApplication:
                         is_bundle: false
-                        type: attribute
-                        dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
-                        prefix: Tests\Integritty\SyliusProductBadgePlugin
+                        type: xml
+                        dir: '%kernel.project_dir%/../../../tests/TestApplication/config/doctrine'
+                        prefix: Tests\Integritty\SyliusProductBadgePlugin\Entity
 

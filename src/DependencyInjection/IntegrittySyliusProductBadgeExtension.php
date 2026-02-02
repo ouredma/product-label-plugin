@@ -9,7 +9,7 @@ use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceE
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class IntegrittySyliusProductBadgeExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
@@ -25,9 +25,9 @@ final class IntegrittySyliusProductBadgeExtension extends AbstractResourceExtens
             $config['css_classes']
         );
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
 
-        $loader->load('services.xml');
+        $loader->load('plugin_services.yaml');
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -37,7 +37,7 @@ final class IntegrittySyliusProductBadgeExtension extends AbstractResourceExtens
 
     protected function getMigrationsNamespace(): string
     {
-        return 'DoctrineMigrations';
+        return 'Integritty\SyliusProductBadgePlugin\Migrations';
     }
 
     protected function getMigrationsDirectory(): string

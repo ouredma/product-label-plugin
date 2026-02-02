@@ -6,7 +6,6 @@ namespace Integritty\SyliusProductBadgePlugin\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -16,9 +15,8 @@ trait ProductBadgeAwareTrait
     /**
      * @var Collection<int, ProductBadge>
      */
-    #[SerializedName('productBadges'),Groups(['sylius:shop:product:show'])]
+    #[SerializedName('productBadges'), Groups(['sylius:shop:product:show'])]
     #[MaxDepth(1)]
-    #[ORM\ManyToMany(targetEntity: ProductBadgeInterface::class, mappedBy: 'products')]
     private Collection $productBadges;
 
     public function initializeProductBadgesCollection(): void

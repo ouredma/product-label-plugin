@@ -2,123 +2,112 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+
+This is `integritty/sylius-product-badge-plugin` - a Sylius plugin that adds product badge/label functionality to Sylius e-commerce stores. It allows administrators to create badges and assign them to products for display in both admin and shop interfaces.
+
 ## Development Commands
 
 ### Docker Environment (Recommended)
 ```bash
-# Initialize Docker environment and install dependencies
-make init
-
-# Initialize database and run migrations
-make database-init
-
-# Load fixtures (optional)
-make load-fixtures
-
-# Start/stop containers
-make up
-make down
-
-# Access containers
-make php-shell
-make node-shell
-```
-
-### Traditional Development
-```bash
-# Frontend setup
-(cd vendor/sylius/test-application && yarn install)
-(cd vendor/sylius/test-application && yarn build)
-vendor/bin/console assets:install
-
-# Database setup
-vendor/bin/console doctrine:database:create
-vendor/bin/console doctrine:migrations:migrate -n
-vendor/bin/console sylius:fixtures:load -n
-
-# Start server
-symfony server:start -d
+make init              # Initialize Docker, install deps, start containers
+make up                # Start containers
+make down              # Stop containers
+make clean             # Stop containers and remove volumes
+make php-shell         # Access PHP container
+make node-shell        # Access Node container
+make database-init     # Create database and run migrations
+make database-reset    # Drop, recreate DB, and run migrations
+make load-fixtures     # Load test fixtures
 ```
 
 ### Testing
 ```bash
-# PHPUnit tests
+# PHPUnit - all tests
 vendor/bin/phpunit
-make phpunit  # Docker
+make phpunit                          # Docker
 
-# Behat tests (non-JS)
+# PHPUnit - specific suite
+vendor/bin/phpunit --testsuite unit
+vendor/bin/phpunit --testsuite functional
+vendor/bin/phpunit --testsuite integration
+
+# Behat - non-JS scenarios
 vendor/bin/behat --strict --tags="~@javascript&&~@mink:chromedriver"
-make behat  # Docker
+make behat                            # Docker
 
-# Behat tests (JS scenarios)
-# Requires Chrome headless and symfony server
+# Behat - JS scenarios (requires Chrome headless + symfony server)
 APP_ENV=test symfony server:start --port=8080 --daemon
 vendor/bin/behat --strict --tags="@javascript,@mink:chromedriver"
 ```
 
 ### Code Quality
 ```bash
-# PHPStan analysis
 vendor/bin/phpstan analyse -c phpstan.neon -l max src/
-make phpstan  # Docker
-
-# Coding standards
 vendor/bin/ecs check
-make ecs  # Docker
+make phpstan                          # Docker
+make ecs                              # Docker
 ```
 
-### Composer Scripts
+### Traditional Development (without Docker)
 ```bash
-# Database reset with fixtures
-composer run database-reset
-
-# Frontend rebuild
-composer run frontend-clear
-
-# Complete test app initialization
-composer run test-app-init
+(cd vendor/sylius/test-application && yarn install && yarn build)
+vendor/bin/console assets:install
+vendor/bin/console doctrine:database:create
+vendor/bin/console doctrine:migrations:migrate -n
+vendor/bin/console sylius:fixtures:load -n
+symfony server:start -d
 ```
 
 ## Architecture
 
-This is a **Sylius Plugin Skeleton** - a template for creating Sylius e-commerce plugins. It provides a complete development environment with both traditional and Docker setups.
+### Plugin Entry Point
+- `src/IntegrittySyliusProductBadgePlugin.php` - Bundle class using `SyliusPluginTrait`
+- `src/DependencyInjection/IntegrittySyliusProductBadgeExtension.php` - Loads services and registers Doctrine migrations
 
-### Core Structure
-- **Main Plugin Class**: `src/IntegrittySyliusProductBadgePlugin.php` - Entry point using `SyliusPluginTrait`
-- **DI Extension**: `src/DependencyInjection/AcmeSyliusExampleExtension.php` - Handles service loading and Doctrine migrations
-- **Services**: `config/services.xml` - Service definitions with XML configuration
-- **Routes**: `config/routes/` - Separate admin and shop route definitions
-- **Templates**: `templates/` - Twig templates for admin and shop with Twig hooks support
+### Entity Layer
+The plugin defines its own entities and provides traits for extending Sylius Product:
+- `src/Entity/ProductBadge.php` - Main badge entity (translatable)
+- `src/Entity/ProductBadgeTranslation.php` - Badge translations
+- `src/Entity/ProductBadgeAwareTrait.php` - Trait for adding badges to Product entity
+- `src/Entity/ProductBadgeAwareInterface.php` - Interface for badge-aware products
 
-### Key Features
-- **Test Application**: Uses `sylius/test-application` for plugin testing in isolation
-- **Asset Management**: Webpack Encore for frontend asset compilation
-- **Database**: Doctrine migrations with proper namespace handling
-- **Testing**: Full Behat + PHPUnit setup with browser testing support
-- **Code Quality**: PHPStan, ECS (Easy Coding Standard), and Rector integration
+Doctrine mappings: `config/doctrine/*.orm.xml` (YAML not supported in Doctrine ORM 3.0+)
 
-### Development Environment
-- **Docker**: Complete containerized environment with PHP, Node.js, and database
-- **Traditional**: Local Symfony server with manual dependency management
-- **Frontend**: Yarn-based asset pipeline through test application
+### Service Configuration
+- `config/plugin_services.yaml` - Main plugin service definitions (imports from `config/services/`)
+- `config/services/forms.yaml` - Form types
+- `config/services/event_listeners.yaml` - Event listeners
+- `config/services/component.yaml` - Twig components
 
-### Testing Strategy
-- **Unit/Integration**: PHPUnit for isolated component testing
-- **Functional**: Behat for feature testing with browser automation
-- **Static Analysis**: PHPStan for type checking and code quality
-- **Standards**: ECS for coding standard enforcement
+### Resource Configuration (Sylius Resource Bundle)
+- `config/resources/product_badge.yaml` - CRUD resource definition
+- `config/grids/product_badge.yaml` - Admin grid configuration
 
-### Database Configuration
-Database credentials should be configured in:
-- `tests/Application/.env` (for development)
-- `tests/Application/.env.test` (for testing)
+### Routing
+- `config/routes/admin.yaml` - Admin panel routes
+- `config/routes/shop.yaml` - Storefront routes
+- `config/routes/api_platform.yaml` - REST API routes
+
+### Templates
+- `templates/admin/` - Admin interface templates
+- `templates/shop/` - Storefront templates
+- Twig hooks configuration: `config/app/twig_hooks/`
+
+### Test Application
+Uses `sylius/test-application` package for isolated plugin testing:
+- Bootstrap: `vendor/sylius/test-application/config/bootstrap.php`
+- Kernel: `Sylius\TestApplication\Kernel`
+- Environment config: `tests/TestApplication/.env`
+
+## Database Configuration
+
+Configure credentials in:
+- `tests/TestApplication/.env` - Development
+- `tests/TestApplication/.env.test` - Testing
 
 ## AI Development Guides
 
-This project includes specialized AI guides to assist with common plugin development tasks:
-
-- **CLEANUP_GUIDE.md** - Guidelines for cleaning up and organizing plugin code
-- **RENAME_GUIDE.md** - Step-by-step instructions for renaming plugins and components
-- **COMPATIBILITY_GUIDE.md** - Best practices for maintaining compatibility across different Sylius versions
-
-These guides provide detailed instructions and automated workflows to help maintain code quality and ensure proper plugin structure.
+- **CLEANUP_GUIDE.md** - Code organization guidelines
+- **RENAME_GUIDE.md** - Renaming plugin components
+- **COMPATIBILITY_GUIDE.md** - Multi-version Sylius compatibility

@@ -1,0 +1,10 @@
+services:
+    integritty_sylius_product_badge_plugin.twig.component.product_badge.form:
+        class: Sylius\Bundle\UiBundle\Twig\Component\ResourceFormComponent
+        arguments:
+            - '@integritty_sylius_product_badge_plugin.repository.product_badge'
+            - '@form.factory'
+            - '%integritty_sylius_product_badge_plugin.model.product_badge.class%'
+            - 'Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeType'
+        tags:
+            - { name: 'sylius.live_component.admin', key: 'integritty:product_badge:form' }
