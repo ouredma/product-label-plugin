@@ -8,11 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Integritty\SyliusProductLabelPlugin\Entity\ProductInterface;
 use Integritty\SyliusProductLabelPlugin\Entity\ProductLabelAwareTrait;
 use Sylius\Component\Core\Model\Product as BaseProduct;
-use Sylius\MolliePlugin\Entity\ProductTrait;
-
 class Product extends BaseProduct implements ProductInterface
 {
-    use ProductTrait;
     use ProductLabelAwareTrait;
 
     public function __construct()

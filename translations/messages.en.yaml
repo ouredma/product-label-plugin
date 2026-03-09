@@ -1,6 +1,6 @@
-sylius.ui.cssClass: Css Class
-sylius.menu.admin.main.configuration.product_badges: Product Badges
-integritty_sylius_product_badge_plugin.ui.product_badge: Product Badge
-integritty_sylius_product_badge_plugin.ui.product_badges: Product Badges
-sylius.ui.product_badges: Product Badges
-sylius.form.product.product_badges: Product Badges
+sylius.ui.cssClass: CSS Class
+sylius.menu.admin.main.configuration.product_labels: Product Labels
+integritty_sylius_product_label_plugin.ui.product_label: Product Label
+integritty_sylius_product_label_plugin.ui.product_labels: Product Labels
+sylius.ui.product_labels: Product Labels
+sylius.form.product.product_labels: Product Labels

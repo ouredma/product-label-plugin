@@ -18,7 +18,7 @@ class ProductLabel implements ProductLabelInterface
         getTranslation as private doGetTranslation;
     }
 
-    /** @var mixed */
+    /** @var int|null */
     protected $id;
 
     /** @var string|null */
@@ -28,6 +28,7 @@ class ProductLabel implements ProductLabelInterface
     /** @var Collection<int, ProductInterface> */
     protected $products;
 
+
     public function __construct()
     {
         $this->initializeTranslationsCollection();
@@ -35,7 +36,7 @@ class ProductLabel implements ProductLabelInterface
         $this->products = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): int|null
     {
         return $this->id;
     }
@@ -77,6 +78,7 @@ class ProductLabel implements ProductLabelInterface
         return new ProductLabelTranslation();
     }
 
+    /** @return Collection<int, ProductInterface> */
     public function getProducts(): Collection
     {
         return $this->products;

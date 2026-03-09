@@ -1,46 +1,68 @@
-## How to implement Product Labels in Sylius
+<p align="center">
+  <a href="https://www.integritty.cz">
+    <img src="https://cdn.prod.website-files.com/68090cf8dfb1e20fef064d3a/68383bc6ac29fe4ced779ee6_navbar2_logo-light.svg" alt="Integritty" width="220" />
+  </a>
+</p>
 
-## 1. Composer:
+<h1 align="center">Integritty Sylius Product Label Plugin</h1>
+
+<p align="center">
+  <a href="https://gitlab.integritty.cz/sylius/product-label-plugin/-/releases"><img src="https://gitlab.integritty.cz/sylius/product-label-plugin/-/badges/release.svg" alt="Latest Release" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License" /></a>
+  <a href="https://gitlab.integritty.cz/sylius/product-label-plugin/-/pipelines"><img src="https://gitlab.integritty.cz/sylius/product-label-plugin/badges/master/pipeline.svg" alt="Build Status" /></a>
+</p>
+
+A Sylius plugin that adds product label management to your store. Administrators can create translatable labels — each with a name and a CSS class — and assign them to products. Labels are exposed via the REST API and can be rendered in both the admin panel and the storefront using your own CSS.
+
+## Requirements
+
+- PHP 8.2+
+- Sylius 2.0+
+
+## Installation
+
+Install via Composer:
+
 ```bash
 composer require integritty/sylius-product-label-plugin
 ```
 
-## 2. Basic configuration:
-Add plugin dependencies to your `config/bundles.php` file:
+### 1. Register the bundle
+
+Add the plugin to `config/bundles.php`:
 
 ```php
-# config/bundles.php
-
 return [
-    ...
+    // ...
     Integritty\SyliusProductLabelPlugin\IntegrittySyliusProductLabelPlugin::class => ['all' => true],
 ];
 ```
 
-## 3. Import required config in your `config/packages/_sylius.yaml` file:
+### 2. Import plugin configuration
+
+Add to `config/packages/_sylius.yaml`:
 
 ```yaml
-# config/packages/_sylius.yaml
-
 imports:
-    ...
+    # ...
     - { resource: "@IntegrittySyliusProductLabelPlugin/config/config.yaml" }
 ```
 
-## 4. Configure Doctrine to resolve the ProductInterface:
+### 3. Configure Doctrine to resolve ProductInterface
 
-Add to your `config/packages/doctrine.yaml`:
+Add to `config/packages/doctrine.yaml`:
 
 ```yaml
-# config/packages/doctrine.yaml
-
 doctrine:
     orm:
         resolve_target_entities:
             Integritty\SyliusProductLabelPlugin\Entity\ProductInterface: App\Entity\Product\Product
 ```
 
-## 5. Override Product.php to use the ProductLabelAwareTrait and implement ProductInterface:
+### 4. Extend your Product entity
+
+Implement the plugin's `ProductInterface` and add the `ProductLabelAwareTrait` to your product entity:
+
 ```php
 // src/Entity/Product/Product.php
 namespace App\Entity\Product;
@@ -61,14 +83,59 @@ class Product extends BaseProduct implements ProductInterface
 }
 ```
 
-## 6. Import routing on top of your `config/routes.yaml` file:
+### 5. Import routing
+
+Add to `config/routes.yaml`:
+
 ```yaml
-# config/routes.yaml
 integritty_sylius_product_label_plugin:
     resource: "@IntegrittySyliusProductLabelPlugin/config/routes.yaml"
 ```
 
-## 7. Run migrations
+### 6. Run database migrations
+
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
+
+## Configuration
+
+No additional configuration is required. The plugin ships with sensible defaults for the admin grid, form types, and API serialisation groups.
+
+To render labels in the storefront, iterate over `product.productLabels` in your Twig templates and apply the CSS class:
+
+```twig
+{% for label in product.productLabels %}
+    <span class="{{ label.cssClass }}">{{ label.name }}</span>
+{% endfor %}
+```
+
+## How It Works
+
+- **Labels** are standalone translatable entities (`ProductLabel`) with a `name` (per locale) and a `cssClass` string.
+- **Assignment** uses a many-to-many relationship between `ProductLabel` and your `Product` entity, managed via `ProductLabelAwareTrait`.
+- **Admin UI** provides a full CRUD grid for labels and a dropdown field on the product edit form, both powered by Sylius Resource Bundle.
+- **API** exposes labels on the product response under the `sylius:shop:product:show` serialisation group.
+
+## Development
+
+### Docker (recommended)
+
+```bash
+make init       # First-time setup: build, install deps, start containers
+make phpunit    # Run unit tests
+make behat      # Run feature tests
+make phpstan    # Static analysis
+make ecs        # Coding standards
+```
+
+### Testing
+
+```bash
+vendor/bin/phpunit
+vendor/bin/behat --strict --tags="~@javascript&&~@mink:chromedriver"
+```
+
+## License
+
+This project is released under the [MIT License](LICENSE).

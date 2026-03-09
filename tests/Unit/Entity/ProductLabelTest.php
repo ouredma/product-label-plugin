@@ -86,11 +86,13 @@ final class ProductLabelTest extends TestCase
     {
         $this->productLabel->setFallbackLocale('en_US');
 
-        $this->productLabel->setCurrentLocale('en_US');
-        $this->productLabel->setName('Sale');
-
+        // Create de_DE first — before en_US exists, so TranslatableTrait creates a fresh
+        // de_DE translation rather than returning the fallback locale's translation.
         $this->productLabel->setCurrentLocale('de_DE');
         $this->productLabel->setName('Angebot');
+
+        $this->productLabel->setCurrentLocale('en_US');
+        $this->productLabel->setName('Sale');
 
         $this->assertSame('Sale', $this->productLabel->getTranslation('en_US')->getName());
         $this->assertSame('Angebot', $this->productLabel->getTranslation('de_DE')->getName());

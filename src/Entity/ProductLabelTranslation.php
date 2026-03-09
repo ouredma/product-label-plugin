@@ -10,13 +10,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Groups(['sylius:shop:product:show'])]
 class ProductLabelTranslation extends AbstractTranslation implements ProductLabelTranslationInterface
 {
-    /** @var mixed */
+    /** @var int|null */
     protected $id;
 
     /** @var string|null */
     protected $name;
 
-    public function getId()
+    public function getId(): int|null
     {
         return $this->id;
     }

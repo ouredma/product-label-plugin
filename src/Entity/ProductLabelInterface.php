@@ -25,6 +25,7 @@ interface ProductLabelInterface extends TimestampableInterface, ResourceInterfac
      */
     public function getTranslation(?string $locale = null): TranslationInterface;
 
+    /** @return Collection<int, ProductInterface> */
     public function getProducts(): Collection;
 
     public function addProduct(ProductInterface $product): void;

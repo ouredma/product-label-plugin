@@ -1,3 +1,3 @@
-integritty_sylius_product_badge_admin:
+integritty_sylius_product_label_admin:
     resource: "admin_routing.yaml"
     prefix: /admin

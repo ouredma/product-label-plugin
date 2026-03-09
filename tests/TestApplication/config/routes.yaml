@@ -1,2 +1,2 @@
-integritty_sylius_product_badge_plugin:
-    resource: "@IntegrittySyliusProductBadgePlugin/config/routes.yaml"
+integritty_sylius_product_label_plugin:
+    resource: "@IntegrittySyliusProductLabelPlugin/config/routes.yaml"

@@ -12,6 +12,9 @@ final class AddProductLabelToMenuListener
     {
         $menu = $event->getMenu();
         $configuration = $menu->getChild('configuration');
+        if (null === $configuration) {
+            return;
+        }
         $configuration
             ->addChild('product_labels', [
                 'route' => 'integritty_sylius_product_label_plugin_admin_product_label_index',
