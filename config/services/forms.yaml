@@ -1,26 +1,26 @@
 services:
-    Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeType:
+    Integritty\SyliusProductLabelPlugin\Form\Type\Admin\ProductLabelType:
         arguments:
-            - '%integritty_sylius_product_badge_plugin.model.product_badge.class%'
-            - '%integritty_sylius_product_badge.css_classes%'
+            - '%integritty_sylius_product_label_plugin.model.product_label.class%'
+            - '%integritty_sylius_product_label.css_classes%'
             - ['sylius']
         tags:
             - { name: 'form.type' }
 
-    Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeTranslationType:
+    Integritty\SyliusProductLabelPlugin\Form\Type\Admin\ProductLabelTranslationType:
         arguments:
-            - '%integritty_sylius_product_badge_plugin.model.product_badge_translation.class%'
+            - '%integritty_sylius_product_label_plugin.model.product_label_translation.class%'
             - ['sylius']
         tags:
             - { name: 'form.type' }
 
-    Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeAutocompleteType:
+    Integritty\SyliusProductLabelPlugin\Form\Type\Admin\ProductLabelAutocompleteType:
         arguments:
-            - '%integritty_sylius_product_badge_plugin.model.product_badge.class%'
+            - '%integritty_sylius_product_label_plugin.model.product_label.class%'
         tags:
             - { name: 'form.type' }
             - { name: 'ux.entity_autocomplete_field' }
 
-    Integritty\SyliusProductBadgePlugin\Form\Extension\Admin\ProductTypeExtension:
+    Integritty\SyliusProductLabelPlugin\Form\Extension\Admin\ProductTypeExtension:
         tags:
             - { name: 'form.type_extension', priority: 300 }

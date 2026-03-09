@@ -1,0 +1,5 @@
+Integritty\SyliusProductLabelPlugin\Entity\ProductLabelTranslation:
+    properties:
+        name:
+            - NotBlank:
+                groups: [sylius]

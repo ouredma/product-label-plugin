@@ -1,5 +1,5 @@
 imports:
-    - { resource: "@IntegrittySyliusProductBadgePlugin/config/config.yaml" }
+    - { resource: "@IntegrittySyliusProductLabelPlugin/config/config.yaml" }
     - { resource: "services_test.php" }
 
 twig:
@@ -11,18 +11,18 @@ services:
         autowire: true
         autoconfigure: true
         public: true
-    Integritty\SyliusProductBadgePlugin\Entity\ProductBadgeInterface: ~
+    Integritty\SyliusProductLabelPlugin\Entity\ProductLabelInterface: ~
 
 sylius_product:
     resources:
         product:
             classes:
-                model: Tests\Integritty\SyliusProductBadgePlugin\Entity\Product
+                model: Tests\Integritty\SyliusProductLabelPlugin\Entity\Product
 
 doctrine:
     orm:
         resolve_target_entities:
-            Integritty\SyliusProductBadgePlugin\Entity\ProductInterface: Tests\Integritty\SyliusProductBadgePlugin\Entity\Product
+            Integritty\SyliusProductLabelPlugin\Entity\ProductInterface: Tests\Integritty\SyliusProductLabelPlugin\Entity\Product
         entity_managers:
             default:
                 mappings:
@@ -30,5 +30,4 @@ doctrine:
                         is_bundle: false
                         type: xml
                         dir: '%kernel.project_dir%/../../../tests/TestApplication/config/doctrine'
-                        prefix: Tests\Integritty\SyliusProductBadgePlugin\Entity
-
+                        prefix: Tests\Integritty\SyliusProductLabelPlugin\Entity

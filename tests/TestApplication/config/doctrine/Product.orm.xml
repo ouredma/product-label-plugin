@@ -4,8 +4,8 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Tests\Integritty\SyliusProductBadgePlugin\Entity\Product" table="sylius_product">
-        <many-to-many field="productBadges" target-entity="Integritty\SyliusProductBadgePlugin\Entity\ProductBadgeInterface" mapped-by="products"/>
+    <entity name="Tests\Integritty\SyliusProductLabelPlugin\Entity\Product" table="sylius_product">
+        <many-to-many field="productLabels" target-entity="Integritty\SyliusProductLabelPlugin\Entity\ProductLabelInterface" mapped-by="products"/>
     </entity>
 
 </doctrine-mapping>

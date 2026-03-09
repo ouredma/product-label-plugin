@@ -1,5 +1,0 @@
-Integritty\SyliusProductBadgePlugin\Entity\ProductBadgeTranslation:
-    properties:
-        name:
-            - NotBlank:
-                groups: [sylius]

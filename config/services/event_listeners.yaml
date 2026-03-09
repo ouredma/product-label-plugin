@@ -1,4 +1,4 @@
 services:
-    Integritty\SyliusProductBadgePlugin\EventListener\Grid\AddProductBadgeToMenuListener:
+    Integritty\SyliusProductLabelPlugin\EventListener\Grid\AddProductLabelToMenuListener:
         tags:
             - { name: 'kernel.event_listener', event: 'sylius.menu.admin.main', method: 'buildMenu' }

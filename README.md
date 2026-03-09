@@ -1,8 +1,8 @@
-## How to implement Product Badges in Sylius
+## How to implement Product Labels in Sylius
 
 ## 1. Composer:
 ```bash
-composer require integritty/sylius-product-badge-plugin "@dev"
+composer require integritty/sylius-product-label-plugin
 ```
 
 ## 2. Basic configuration:
@@ -13,7 +13,7 @@ Add plugin dependencies to your `config/bundles.php` file:
 
 return [
     ...
-    Integritty\SyliusProductBadgePlugin\IntegrittySyliusProductBadgePlugin::class => ['all' => true],
+    Integritty\SyliusProductLabelPlugin\IntegrittySyliusProductLabelPlugin::class => ['all' => true],
 ];
 ```
 
@@ -24,7 +24,7 @@ return [
 
 imports:
     ...
-        - { resource: "@IntegrittySyliusProductBadgePlugin/config/config.yaml" }
+    - { resource: "@IntegrittySyliusProductLabelPlugin/config/config.yaml" }
 ```
 
 ## 4. Configure Doctrine to resolve the ProductInterface:
@@ -37,30 +37,35 @@ Add to your `config/packages/doctrine.yaml`:
 doctrine:
     orm:
         resolve_target_entities:
-            Integritty\SyliusProductBadgePlugin\Entity\ProductInterface: App\Entity\Product\Product
+            Integritty\SyliusProductLabelPlugin\Entity\ProductInterface: App\Entity\Product\Product
 ```
 
-## 5. Override Product.php to use the ProductBadgeAwareTrait and implement ProductInterface:
+## 5. Override Product.php to use the ProductLabelAwareTrait and implement ProductInterface:
 ```php
 // src/Entity/Product/Product.php
 namespace App\Entity\Product;
 
-use Integritty\SyliusProductBadgePlugin\Entity\ProductInterface;
-use Integritty\SyliusProductBadgePlugin\Entity\ProductBadgeAwareTrait;
+use Integritty\SyliusProductLabelPlugin\Entity\ProductInterface;
+use Integritty\SyliusProductLabelPlugin\Entity\ProductLabelAwareTrait;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 
 class Product extends BaseProduct implements ProductInterface
 {
-    use ProductBadgeAwareTrait;
-    ...
+    use ProductLabelAwareTrait;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initializeProductLabelsCollection();
+    }
 }
 ```
 
 ## 6. Import routing on top of your `config/routes.yaml` file:
 ```yaml
 # config/routes.yaml
-integritty_sylius_product_badge_plugin:
-    resource: "@IntegrittySyliusProductBadgePlugin/config/routes.yaml"
+integritty_sylius_product_label_plugin:
+    resource: "@IntegrittySyliusProductLabelPlugin/config/routes.yaml"
 ```
 
 ## 7. Run migrations

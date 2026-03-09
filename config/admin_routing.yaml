@@ -1,14 +1,12 @@
-# Define your own admin routes here
-# Define your own admin routes here
-sylius_admin_product_badge:
+sylius_admin_product_label:
     resource: |
-        alias: integritty_sylius_product_badge_plugin.product_badge
+        alias: integritty_sylius_product_label_plugin.product_label
         section: admin
         permission: true
         templates: "@SyliusAdmin\\shared\\crud"
         except: ['show']
         redirect: index
-        grid: sylius_admin_product_badge
+        grid: sylius_admin_product_label
         form:
-            type: Integritty\SyliusProductBadgePlugin\Form\Type\Admin\ProductBadgeType
+            type: Integritty\SyliusProductLabelPlugin\Form\Type\Admin\ProductLabelType
     type: sylius.resource

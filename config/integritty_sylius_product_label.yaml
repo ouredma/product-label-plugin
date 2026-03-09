@@ -1,0 +1,10 @@
+integritty_sylius_product_label:
+    css_classes:
+        - "bg-red"
+        - "bg-secondary"
+        - "bg-success"
+        - "bg-danger"
+        - "bg-warning"
+        - "bg-info"
+        - "bg-light"
+        - "bg-dark"

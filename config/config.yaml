@@ -1,10 +1,8 @@
-# Put your plugin configuration here
-
 imports:
-    - { resource: "resources/product_badge.yaml" }
-    - { resource: "grids/product_badge.yaml" }
-    - { resource: "app/twig_hooks/admin/product_badge_create.yaml" }
-    - { resource: "app/twig_hooks/admin/product_badge_update.yaml" }
+    - { resource: "resources/product_label.yaml" }
+    - { resource: "grids/product_label.yaml" }
+    - { resource: "app/twig_hooks/admin/product_label_create.yaml" }
+    - { resource: "app/twig_hooks/admin/product_label_update.yaml" }
     - { resource: "app/twig_hooks/admin/product_update.yaml" }
     - { resource: "app/twig_hooks/admin/product_create.yaml" }
-    - { resource: "integritty_sylius_product_badge.yaml" }
+    - { resource: "integritty_sylius_product_label.yaml" }

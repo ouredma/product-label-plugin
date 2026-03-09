@@ -1,0 +1,13 @@
+sylius_resource:
+    resources:
+        integritty_sylius_product_label_plugin.product_label:
+            driver: doctrine/orm
+            classes:
+                model: Integritty\SyliusProductLabelPlugin\Entity\ProductLabel
+                interface: Integritty\SyliusProductLabelPlugin\Entity\ProductLabelInterface
+                repository: Integritty\SyliusProductLabelPlugin\Repository\ProductLabelRepository
+            translation:
+                classes:
+                    model: Integritty\SyliusProductLabelPlugin\Entity\ProductLabelTranslation
+                    interface: Integritty\SyliusProductLabelPlugin\Entity\ProductLabelTranslationInterface
+                    repository: Integritty\SyliusProductLabelPlugin\Repository\ProductLabelTranslationRepository

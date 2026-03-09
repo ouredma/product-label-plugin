@@ -1,0 +1,5 @@
+Integritty\SyliusProductLabelPlugin\Entity\ProductLabel:
+    properties:
+        cssClass:
+            - NotBlank:
+                groups: [sylius]

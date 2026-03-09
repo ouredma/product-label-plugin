@@ -1,11 +1,11 @@
 {
-    "name": "integritty/sylius-product-badge-plugin",
+    "name": "integritty/sylius-product-label-plugin",
     "type": "sylius-plugin",
-    "description": "Acme example plugin for Sylius.",
+    "description": "Product label plugin for Sylius.",
     "keywords": [
         "sylius",
         "sylius-plugin",
-        "test-appication"
+        "product-label"
     ],
     "license": "MIT",
     "require": {
@@ -65,12 +65,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Integritty\\SyliusProductBadgePlugin\\": "src/"
+            "Integritty\\SyliusProductLabelPlugin\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Integritty\\SyliusProductBadgePlugin\\": ["tests/", "tests/TestApplication/src/"]
+            "Tests\\Integritty\\SyliusProductLabelPlugin\\": ["tests/", "tests/TestApplication/src/"]
         }
     },
     "scripts": {

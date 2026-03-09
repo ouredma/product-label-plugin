@@ -1,5 +1,0 @@
-Integritty\SyliusProductBadgePlugin\Entity\ProductBadge:
-    properties:
-        cssClass:
-            - NotBlank:
-                groups: [sylius]

@@ -1,0 +1,35 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.product_label.create.content':
+            form:
+                component: 'integritty:product_label:form'
+                props:
+                    resource: '@=_context.resource'
+                    form: '@=_context.form'
+                    template: '@IntegrittySyliusProductLabelPlugin/admin/product_label/form.html.twig'
+                priority: 0
+
+        'sylius_admin.product_label.create.content.form':
+            sections:
+                template: '@IntegrittySyliusProductLabelPlugin/admin/product_label/form/sections.html.twig'
+                priority: 0
+
+        'sylius_admin.product_label.create.content.form.sections':
+            general:
+                template: '@IntegrittySyliusProductLabelPlugin/admin/product_label/form/sections/general.html.twig'
+                priority: 200
+            translations:
+                template: '@IntegrittySyliusProductLabelPlugin/admin/product_label/form/sections/translations.html.twig'
+                priority: 100
+
+        'sylius_admin.product_label.create.content.form.sections.general':
+            default:
+                enabled: false
+            css_class:
+                template: '@IntegrittySyliusProductLabelPlugin/admin/product_label/form/sections/general/css_class.html.twig'
+                priority: 100
+
+        'sylius_admin.product_label.create.content.form.sections.translations':
+            name:
+                template: '@IntegrittySyliusProductLabelPlugin/admin/product_label/form/sections/translations/name.html.twig'
+                priority: 0
